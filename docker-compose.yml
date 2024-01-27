@@ -1,0 +1,54 @@
+version: "3.2"
+services:
+  cluster-rabbitmq-1:
+    image: rabbitmq:3-management
+    container_name: cluster-rabbitmq-1
+    hostname: host-rabbitmq-1
+    environment:
+      - NODENAME=cluster-rabbitmq-1
+      - CONFIG_FILE=/etc/rabbitmq/conf.d/rabbitmq.conf
+      - RABBITMQ_ERLANG_COOKIE=This_is_my_secret_phrase
+      - CLUSTERED=true
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./configs/rabbitmq-1/conf.d/:/etc/rabbitmq/conf.d/
+    networks:
+      - lan-rabbitmq
+  cluster-rabbitmq-2:
+    image: rabbitmq:3-management
+    container_name: cluster-rabbitmq-2
+    hostname: host-rabbitmq-2
+    environment:
+      - NODENAME=cluster-rabbitmq-2
+      - CONFIG_FILE=/etc/rabbitmq/conf.d/rabbitmq.conf
+      - RABBITMQ_ERLANG_COOKIE=This_is_my_secret_phrase
+      - CLUSTERED=true
+    ports:
+      - 5673:5672
+      - 15673:15672
+    volumes:
+      - ./configs/rabbitmq-2/conf.d/:/etc/rabbitmq/conf.d/
+    networks:
+      - lan-rabbitmq
+  cluster-rabbitmq-3:
+    image: rabbitmq:3-management
+    container_name: cluster-rabbitmq-3
+    hostname: host-rabbitmq-3
+    environment:
+      - NODENAME=cluster-rabbitmq-3
+      - CONFIG_FILE=/etc/rabbitmq/conf.d/rabbitmq.conf
+      - RABBITMQ_ERLANG_COOKIE=This_is_my_secret_phrase
+      - CLUSTERED=true
+    ports:
+      - 5674:5672
+      - 15674:15672
+    volumes:
+      - ./configs/rabbitmq-3/conf.d/:/etc/rabbitmq/conf.d/
+    networks:
+      - lan-rabbitmq
+
+networks:
+  lan-rabbitmq:
+    driver: bridge
